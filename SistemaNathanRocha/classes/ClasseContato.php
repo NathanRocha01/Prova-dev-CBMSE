@@ -73,7 +73,7 @@ public function Listar($cod){
 
   include_once 'ClasseBD.php';
   $bd = new BD("contato_pessoa");
-  $dados = $bd -> ConsultarEspecifica("contato_pessoa.id, `contato`, tipo_contato.nomecontato","INNER JOIN pessoa ON pessoa.id = contato_pessoa.pessoa_id INNER JOIN tipo_contato ON tipo_contato.id = contato_pessoa.tipo_contato_id WHERE pessoa.id=$cod");
+  $dados = $bd -> ConsultarEspecifica("contato_pessoa.id, `contato`, pessoa_id, tipo_contato.nomecontato","INNER JOIN pessoa ON pessoa.id = contato_pessoa.pessoa_id INNER JOIN tipo_contato ON tipo_contato.id = contato_pessoa.tipo_contato_id WHERE pessoa.id=$cod");
   if ($dados == null) {
     $tabela = "<alert style=' font-size: 18pt;'>Não há contatos cadastradas</alert>";
 	}elseif ($dados != null) {
@@ -90,7 +90,7 @@ public function Listar($cod){
     	$tabela.="<tr>";
       $tabela.="<td>".($dados[$i]["nomecontato"])."</td>";
     	$tabela.="<td>".($dados[$i][$Variaveis[0]])."</td>";
-    	$tabela.="<td class='d-flex justify-content-between flex-wrap'><a href='EditarPessoa.php?cod=".$dados[$i]['id']."'><i class='fas fa-pencil-alt'></i>Editar</a> <a href='CrudPessoa.php?cod=".$dados[$i]['id']."&acao=-'><i class='far fa-trash-alt'></i>Deletar</a></td>";
+    	$tabela.="<td class='d-flex justify-content-between flex-wrap'><a href='editarContato.php?cod=".$dados[$i]['id']."'><i class='fas fa-pencil-alt'></i>Editar</a> <a href='../processamento/CrudContato.php?cod=".$dados[$i]['id']."&acao=-&cod_pessoa=".$dados[$i]['pessoa_id']."'><i class='far fa-trash-alt'></i>Deletar</a></td>";
     	$tabela.="</tr>";
     }
     $tabela.="</tbody>";
@@ -105,11 +105,13 @@ public function Listar($cod){
     $Variaveis = [
     0 => "contato",
     1 => "pessoa_id",
-    2 => "tipo_contato_id"
+    2 => "nome",
+    3 => "sobrenome",
+    4 => "tipo_contato_id",
     ];
     include_once 'ClasseBD.php';
     $bd = new BD("contato_pessoa");
-    $dados = $bd -> Consultar("id = '$Codigo'");
+    $dados = $bd -> ConsultarEspecifica("contato_pessoa.id, `contato`, contato_pessoa.pessoa_id, pessoa.nome, pessoa.sobrenome, contato_pessoa.tipo_contato_id", "INNER JOIN pessoa ON pessoa.id = contato_pessoa.pessoa_id INNER JOIN tipo_contato ON tipo_contato.id = contato_pessoa.tipo_contato_id WHERE contato_pessoa.id=$Codigo");
     for ($j=0; $j < count($dados); $j++) { 
      for ($i=0; $i < count($Variaveis); $i++) { 
     $vars[] = $dados[$j][$Variaveis[$i]]; 
@@ -134,7 +136,7 @@ $Variaveis = [
     ];
     include_once 'ClasseBD.php';
     $bd = new BD("contato_pessoa");
-	$dados = $bd -> Consultar("contato = $Valores[0]");
+	$dados = $bd -> Consultar("contato = $Valores[0] AND tipo_contato_id = $Valores[2]");
   if(isset($dados)){
   	$dados="false";
   }else{

@@ -64,24 +64,29 @@ public function Listar(){
   $bd = new BD("pessoa");
   $dados = $bd -> Consultar("1");
   if ($dados == null) {
-    $tabela = "<alert style=' font-size: 18pt; position: absolute; top: 20%;left: 37%;'>Não há pessoas cadastradas</alert>";
+    $tabela = "<alert style=' font-size: 18pt; '>Não há pessoas cadastradas</alert>";
 	}elseif ($dados != null) {
-		$tabela = "<table>";
+		$tabela = "<table class='table table-striped'>";
     $tabela .="<thead>";
     $tabela .= "<tr>";
-    $tabela .= "<th>Nome</th> 
-    			<th>Ações</th>";
+    $tabela .= "
+          <th scope='col'>#</th>
+          <th th scope='col'>Nome</th> 
+    			<th th scope='col'>Ações</th>";
      $tabela .= "</tr>";
     $tabela .="</thead>";
     $tabela .="<tbody>";
     for ($i=0; $i < count($dados) ; $i++) { 
     	$tabela.="<tr>";
+      $tabela.="<th scope='row'>$i</th>";
     	$tabela.="<td>".($dados[$i][$Variaveis[0]])." ".($dados[$i][$Variaveis[1]])."</td>";
-    	$tabela.="<td style='word-spacing: 10px;'><a><i class='fas fa-plus'></i>AdicionarContato</a> <a href='ConsultarPessoa.php?cod=".$dados[$i]['id']."'><i class='far fa-eye'></i>Visualizar</a> <a href='EditarPessoa.php?cod=".$dados[$i]['id']."'><i class='fas fa-pencil-alt'></i>Editar</a> <a href='CrudPessoa.php?cod=".$dados[$i]['id']."&acao=-'><i class='far fa-trash-alt'></i>Deletar</a></td>";
+    	$tabela.="<td class='d-flex justify-content-between flex-wrap'><a><i class='fas fa-plus'></i>AdicionarContato</a> <a href='visualizarContato.php?cod=".$dados[$i]['id']."'><i class='far fa-eye'></i>Visualizar</a> <a href='editarPessoa.php?cod=".$dados[$i]['id']."'><i class='fas fa-pencil-alt'></i>Editar</a> <a href='../processamento/CrudPessoa.php?cod=".$dados[$i]['id']."&acao=-'><i class='far fa-trash-alt'></i>Deletar</a></td>";
     	$tabela.="</tr>";
     }
+    $tabela.="</tbody>";
+    $tabela.="</table>";
+    return $tabela;
 	}
-return $tabela;
 }
 //--------------------------------
 
