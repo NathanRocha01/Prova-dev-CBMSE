@@ -5,7 +5,7 @@
 </head>
 <body>
 <?php
-include_once 'ClassePessoa.php';
+include_once '../classes/ClassePessoa.php';
 $pessoa = new Pessoa();
 if (isset($_POST['submit'])) {
 if ($_POST['submit']=="Enviar") {
@@ -14,10 +14,10 @@ $pessoa -> setSobrenome("'".$_POST["sobrenome"]."'");
 $verificação = $pessoa -> Cadastro();
 if ($verificação == "false") {
 	session_start();
-	$_SESSION['msg']= "<alert style='color: red; font-size: 10pt'>Usuário ja existe</alert>";
+	$_SESSION['msg']= "<alert style='color: red; font-size: 20pt'>Usuário ja existe</alert>";
 }else{
 	session_start();
-	$_SESSION['msg']= "<alert style='color: green; font-size: 10pt'>Cadastrado com sucesso</alert>";
+	$_SESSION['msg']= "<alert style='color: green; font-size: 20pt'>Cadastrado com sucesso</alert>";
 }
 }
 if ($_POST['submit']=="Alterar"){
@@ -26,10 +26,10 @@ $pessoa -> setSobrenome("'".$_POST["sobrenome"]."'");
 $verificação = $pessoa -> Alterar($_POST['cod']);
 if ($verificação == "false") {
 	session_start();
-	$_SESSION['msg']= "<alert style='color: red; font-size: 10pt'>Dados do usuário ja existem</alert>";
+	$_SESSION['msg']= "<alert style='color: red; font-size: 20pt'>Dados do usuário ja existem</alert>";
 }else{
 	session_start();
-	$_SESSION['msg']= "<alert style='color: green; font-size: 10pt'>Dados alterados com sucesso</alert>";
+	$_SESSION['msg']= "<alert style='color: green; font-size: 20pt'>Dados alterados com sucesso</alert>";
 }
 
 }
@@ -40,7 +40,7 @@ if (isset($_GET['acao'])) {
 	}
 
 }
-header("location: ListaContatos.php")
+header("location: ../pages/index.php")
 ?>
 </body>
 </html>
